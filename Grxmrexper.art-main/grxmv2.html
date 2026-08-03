@@ -557,7 +557,7 @@
 
   /* ---------- Theme ripple (light/dark expand transition) ---------- */
   .theme-ripple{
-    position:fixed; inset:0; z-index:500;
+    position:fixed; inset:0; z-index:0;
     pointer-events:none;
     clip-path:circle(0px at 50% 50%);
     will-change:clip-path;
@@ -573,6 +573,43 @@
   }
   .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
 
+  /* ---------- Custom cursor ---------- */
+  @media (hover:hover) and (pointer:fine){
+    html, body, a, button, input, textarea, .work-item{cursor:none;}
+  }
+  .cursor-dot{
+    position:fixed; top:0; left:0; width:7px; height:7px; border-radius:50%;
+    background:var(--accent-bright); pointer-events:none; z-index:600;
+    transform:translate(-50%,-50%); opacity:0;
+    transition:opacity .3s ease, background-color .4s ease;
+    mix-blend-mode:difference;
+  }
+  .cursor-ring{
+    position:fixed; top:0; left:0; width:36px; height:36px; border-radius:50%;
+    border:1.5px solid var(--accent-bright); pointer-events:none; z-index:600;
+    transform:translate(-50%,-50%); opacity:0;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(163,116,255,0.08);
+    transition:width .5s var(--ease-rise), height .5s var(--ease-rise),
+               background-color .5s var(--ease-rise), border-color .4s ease,
+               opacity .3s ease, color .3s ease;
+  }
+  .cursor-ring.grow{width:60px; height:60px; background:rgba(163,116,255,0.14);}
+  .cursor-ring.view{
+    width:84px; height:84px;
+    background:var(--accent); border-color:var(--accent);
+  }
+  .cursor-ring.press{width:30px; height:30px;}
+  .cursor-label{
+    font-family:var(--font-mono); font-size:10.5px; font-weight:700;
+    letter-spacing:.08em; text-transform:uppercase; color:#0b0614;
+    opacity:0; transition:opacity .25s ease; white-space:nowrap;
+  }
+  .cursor-ring.view .cursor-label{opacity:1;}
+  @media (hover:none), (pointer:coarse){
+    .cursor-dot, .cursor-ring{display:none;}
+  }
+
   /* ---------- Reveal on scroll ---------- */
   .reveal{opacity:0; transform:translateY(18px); transition:opacity 1.75s ease, transform 1.75s var(--ease-rise);}
   .reveal.visible{opacity:1; transform:translateY(0);}
@@ -585,6 +622,9 @@
 </style>
 </head>
 <body>
+
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"><span class="cursor-label" id="cursorLabel"></span></div>
 
 <a href="#home" class="skip-link">Skip to content</a>
 
@@ -716,11 +756,11 @@
       </div>
       <div class="testimonial-grid">
         <div class="testimonial-card">
-          <p class="testimonial-quote">"Add a real quote from a client here."</p>
+          <p class="testimonial-quote">"Amazing thumbnail maker, really fast and good quality delivery, the details are actually AMAZING. Also really good prices and extremely kind dude, would definitely recommend commissioning."</p>
           <span class="testimonial-name">Oxrisen-</span>
         </div>
         <div class="testimonial-card">
-          <p class="testimonial-quote">"Add a real quote from a client here."</p>
+          <p class="testimonial-quote">"Great guy really, the thumbnails always get delivered quickly and in high quality. He makes adjustments to whatever you want and adds his own opinions on the thumbnails. Good prices too and really friendly. 100% recommend."</p>
           <span class="testimonial-name">KavernMC-</span>
         </div>
         <div class="testimonial-card">
@@ -1115,6 +1155,70 @@
     item.style.transitionDelay = ((i % 6) * 70) + 'ms';
     revealObserver.observe(item);
   });
+
+  // ---- custom cursor ----
+  (function(){
+    var isCoarse = window.matchMedia && window.matchMedia('(hover:none), (pointer:coarse)').matches;
+    var dot = document.getElementById('cursorDot');
+    var ring = document.getElementById('cursorRing');
+    var label = document.getElementById('cursorLabel');
+    if (isCoarse || !dot || !ring) return;
+
+    var mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    var ringX = mouseX, ringY = mouseY;
+    var active = false;
+
+    function show(){
+      dot.style.opacity = 1; ring.style.opacity = 1;
+    }
+
+    document.addEventListener('mouseenter', function(e){
+      mouseX = e.clientX; mouseY = e.clientY;
+      ringX = mouseX; ringY = mouseY;
+      dot.style.transform = 'translate(' + mouseX + 'px,' + mouseY + 'px) translate(-50%,-50%)';
+      ring.style.transform = 'translate(' + ringX + 'px,' + ringY + 'px) translate(-50%,-50%)';
+      active = true;
+      show();
+    });
+
+    document.addEventListener('mousemove', function(e){
+      mouseX = e.clientX; mouseY = e.clientY;
+      if (!active){ active = true; show(); }
+      dot.style.transform = 'translate(' + mouseX + 'px,' + mouseY + 'px) translate(-50%,-50%)';
+    });
+
+    document.addEventListener('mouseleave', function(){
+      dot.style.opacity = 0; ring.style.opacity = 0;
+      active = false;
+    });
+
+    function tick(){
+      ringX += (mouseX - ringX) * 0.16;
+      ringY += (mouseY - ringY) * 0.16;
+      ring.style.transform = 'translate(' + ringX + 'px,' + ringY + 'px) translate(-50%,-50%)';
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    document.addEventListener('mousedown', function(){ ring.classList.add('press'); });
+    document.addEventListener('mouseup', function(){ ring.classList.remove('press'); });
+
+    document.querySelectorAll('a, button, input, textarea').forEach(function(el){
+      el.addEventListener('mouseenter', function(){ ring.classList.add('grow'); });
+      el.addEventListener('mouseleave', function(){ ring.classList.remove('grow'); });
+    });
+
+    document.querySelectorAll('.work-item').forEach(function(el){
+      el.addEventListener('mouseenter', function(){
+        ring.classList.add('grow', 'view');
+        label.textContent = 'View';
+      });
+      el.addEventListener('mouseleave', function(){
+        ring.classList.remove('grow', 'view');
+        label.textContent = '';
+      });
+    });
+  })();
 })();
 </script>
 
