@@ -1,0 +1,61 @@
+backend:
+  name: github
+  repo: YOUR_GITHUB_USERNAME/YOUR_REPO_NAME   # <-- change this
+  branch: main
+  base_url: https://YOUR-WORKER-SUBDOMAIN.workers.dev  # <-- change this (see SETUP.md)
+  auth_endpoint: auth
+
+# Real GitHub login is the only way in — this is not a password gate.
+# Only accounts with push access to the repo above can sign in at all.
+
+media_folder: "images/uploads"   # where uploaded images get committed
+public_folder: "/images/uploads" # how they're referenced from the site
+
+collections:
+  - name: "trusted"
+    label: "Trusted By (YouTube channels)"
+    files:
+      - name: "trusted"
+        label: "Channel list"
+        file: "data/trusted.json"
+        fields:
+          - label: "Channels"
+            name: "items"
+            widget: "list"
+            summary: "{{name}}"
+            fields:
+              - { label: "Channel name", name: "name", widget: "string" }
+              - { label: "YouTube URL", name: "url", widget: "string" }
+              - { label: "Avatar image", name: "avatar", widget: "image" }
+
+  - name: "quotes"
+    label: "Testimonials"
+    files:
+      - name: "quotes"
+        label: "Quote list"
+        file: "data/quotes.json"
+        fields:
+          - label: "Quotes"
+            name: "items"
+            widget: "list"
+            summary: "{{name}} — {{quote}}"
+            fields:
+              - { label: "Quote", name: "quote", widget: "text" }
+              - { label: "Customer name", name: "name", widget: "string" }
+
+  - name: "work"
+    label: "Portfolio thumbnails"
+    files:
+      - name: "work"
+        label: "Thumbnail list"
+        file: "data/work.json"
+        fields:
+          - label: "Thumbnails"
+            name: "items"
+            widget: "list"
+            summary: "{{tag}}"
+            fields:
+              - { label: "Client / tag", name: "tag", widget: "string" }
+              - { label: "Thumbnail image", name: "image", widget: "image" }
+              - { label: "Alt text", name: "alt", widget: "string" }
+              - { label: "Video link (leave blank if none)", name: "video", widget: "string", required: false }
