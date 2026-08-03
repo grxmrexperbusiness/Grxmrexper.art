@@ -1,4 +1,5 @@
-name = "grxmrexper-cms-auth"
+# oauth-worker/wrangler.toml
+name = 'grxmrexper-art'
 main = "worker.js"
 compatibility_date = "2025-01-01"
 
