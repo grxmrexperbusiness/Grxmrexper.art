@@ -2,7 +2,7 @@ backend:
   name: github
   repo: grxmrexperbusiness/Grxmrexper.art   # <-- change this
   branch: main
-  base_url: https://grxmrexperbusiness.github.io/Grxmrexper.art/  # <-- change this (see SETUP.md)
+  base_url: https://grxmrexper-art.cotaabdias.workers.dev/  # <-- change this (see SETUP.md)
   auth_endpoint: auth
 
 # Real GitHub login is the only way in — this is not a password gate.
