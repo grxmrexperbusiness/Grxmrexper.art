@@ -2,12 +2,12 @@
   "items": [
     {
       "tag": "Oxrisen",
-      "image": "images/uploads/work/oxrizen-1.png",
+      "image": "/images/uploads/oxrizen1.png",
       "alt": "Thumbnail commissioned for Oxrizen"
     },
     {
       "tag": "Pringles SMP",
-      "image": "images/uploads/work/pringles-smp-1.jpg",
+      "image": "/images/uploads/pringlesmp.png",
       "alt": "Pringles SMP thumbnail"
     },
     {
