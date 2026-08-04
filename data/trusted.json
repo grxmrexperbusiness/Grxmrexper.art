@@ -3,22 +3,22 @@
     {
       "name": "Scar",
       "url": "https://www.youtube.com/@scarvisz",
-      "avatar": "images/uploads/trusted/scar.jpg"
+      "avatar": "/images/uploads/trusted/scar.jpg"
     },
     {
       "name": "KavernMC",
       "url": "https://www.youtube.com/@KavernMC",
-      "avatar": "images/uploads/trusted/kavernmc.jpg"
+      "avatar": "/images/uploads/trusted/kavernmc.jpg"
     },
     {
       "name": "Oxrisen",
       "url": "https://www.youtube.com/@Oxrisen",
-      "avatar": "images/uploads/trusted/oxrisen.jpg"
+      "avatar": "/images/uploads/trusted/oxrisen.jpg"
     },
     {
       "name": "Obi_Block",
       "url": "https://www.youtube.com/@Obi_Block",
-      "avatar": "images/uploads/trusted/obi-block.jpg"
+      "avatar": "/images/uploads/trusted/obi-block.jpg"
     }
   ]
 }
