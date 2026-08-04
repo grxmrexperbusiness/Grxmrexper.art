@@ -9,7 +9,7 @@ backend:
 # Only accounts with push access to the repo above can sign in at all.
 
 media_folder: "images/uploads"   # where uploaded images get committed
-public_folder: "/images/uploads" # how they're referenced from the site
+public_folder: "/Grxmrexper.art/images/uploads" # how they're referenced from the site
 
 collections:
   - name: "trusted"
