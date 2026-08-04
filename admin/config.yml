@@ -1,5 +1,5 @@
 backend:
-  name: grxmrexperbusiness
+  name: github
   repo: grxmrexperbusiness/Grxmrexper.art   # <-- change this
   branch: main
   base_url: https://grxmrexper-art.cotaabdias.workers.dev/  # <-- change this (see SETUP.md)
