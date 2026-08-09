@@ -12,6 +12,15 @@ media_folder: "images/uploads"   # where uploaded images get committed
 public_folder: "/Grxmrexper.art/images/uploads" # how they're referenced from the site
 
 collections:
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - name: "settings"
+        label: "General"
+        file: "data/settings.json"
+        fields:
+          - { label: "Commissions Open", name: "commissionsOpen", widget: "boolean", default: true, hint: "Toggle off when you're not taking new commissions — the status pill on the site updates automatically." }
+
   - name: "trusted"
     label: "Trusted By (YouTube channels)"
     files:
