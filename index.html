@@ -222,6 +222,15 @@
     70%{box-shadow:0 0 0 7px rgba(74,222,128,0);}
     100%{box-shadow:0 0 0 0 rgba(74,222,128,0);}
   }
+  .status-pill.closed{
+    border-color:rgba(248,113,113,0.32);
+    color:#f9c4c4;
+  }
+  .status-pill.closed .dot{
+    background:#f87171;
+    animation:none;
+    box-shadow:none;
+  }
 
   @media (max-width:560px){
     .pill-nav{top:auto; bottom:16px;}
@@ -489,10 +498,21 @@
   .process-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:20px;}
   .process-card{
     background:var(--surface); border:1px solid var(--border);
-    border-radius:var(--squircle); padding:26px 24px;
+    border-radius:var(--squircle); padding:0; overflow:hidden;
+    display:flex; flex-direction:column;
     transition:transform 1.75s var(--ease-rise), box-shadow 1.75s var(--ease-rise), border-color 0.3s ease;
   }
   .process-card:hover{transform:translateY(-6px); box-shadow:var(--shadow-glow);}
+  .process-visual{
+    display:flex; align-items:center; justify-content:center;
+    padding:30px; min-height:168px;
+    background:
+      radial-gradient(120% 140% at 20% 0%, rgba(163,116,255,0.14), transparent 60%),
+      var(--surface-2);
+    border-bottom:1px solid var(--border);
+  }
+  .process-visual svg{width:100%; height:auto; max-width:210px; display:block;}
+  .process-body{padding:22px 24px 26px;}
   .process-step{
     display:block; font-family:var(--font-mono); font-size:11px;
     letter-spacing:0.1em; text-transform:uppercase; color:var(--accent-bright);
@@ -652,7 +672,7 @@
   </button>
 </nav>
 
-<div class="status-pill"><span class="dot" aria-hidden="true"></span>Commissions Open</div>
+<div class="status-pill" id="statusPill"><span class="dot" aria-hidden="true"></span><span id="statusPillText">Commissions Open</span></div>
 
 <main>
 
@@ -785,19 +805,69 @@
       </div>
       <div class="process-grid">
         <div class="process-card">
-          <span class="process-step">Step 01</span>
-          <h3>Brief &amp; References</h3>
-          <p>Send the video title, the vibe you're going for, and any reference images — that's enough to start.</p>
+          <div class="process-visual" aria-hidden="true">
+            <svg viewBox="0 0 210 130" fill="none" stroke="var(--accent-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="14" y="24" width="78" height="46" rx="12" opacity="0.85"/>
+              <line x1="28" y1="40" x2="70" y2="40" opacity="0.6"/>
+              <line x1="28" y1="50" x2="60" y2="50" opacity="0.6"/>
+              <line x1="28" y1="60" x2="50" y2="60" opacity="0.45"/>
+              <circle cx="130" cy="30" r="16" opacity="0.85"/>
+              <path d="M124 30a6 6 0 0 1 12 0c0 3-2 4-3 6h-6c-1-2-3-3-3-6Z" opacity="0.6"/>
+              <line x1="127" y1="42" x2="133" y2="42" opacity="0.6"/>
+              <rect x="106" y="58" width="90" height="50" rx="12" opacity="0.85"/>
+              <line x1="122" y1="76" x2="168" y2="76" opacity="0.6"/>
+              <line x1="122" y1="86" x2="158" y2="86" opacity="0.6"/>
+              <line x1="122" y1="96" x2="148" y2="96" opacity="0.45"/>
+            </svg>
+          </div>
+          <div class="process-body">
+            <span class="process-step">Step 01</span>
+            <h3>Brief &amp; References</h3>
+            <p>Send the video title, the vibe you're going for, and any reference images — that's enough to start.</p>
+          </div>
         </div>
         <div class="process-card">
-          <span class="process-step">Step 02</span>
-          <h3>Scene &amp; Composition</h3>
-          <p>The Minecraft scene gets built and framed — angle, posing, and lighting worked out before any editing.</p>
+          <div class="process-visual" aria-hidden="true">
+            <svg viewBox="0 0 210 130" fill="none" stroke="var(--accent-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="8" y="8" width="194" height="114" rx="14" opacity="0.55"/>
+              <line x1="8" y1="65" x2="202" y2="65" stroke-dasharray="4 5" opacity="0.35"/>
+              <line x1="76" y1="8" x2="76" y2="122" stroke-dasharray="4 5" opacity="0.35"/>
+              <rect x="52" y="41" width="48" height="48" rx="10" opacity="0.9"/>
+              <circle cx="76" cy="65" r="7" opacity="0.85"/>
+              <line x1="76" y1="49" x2="76" y2="56" opacity="0.6"/>
+              <line x1="76" y1="74" x2="76" y2="81" opacity="0.6"/>
+              <line x1="60" y1="65" x2="67" y2="65" opacity="0.6"/>
+              <line x1="85" y1="65" x2="92" y2="65" opacity="0.6"/>
+              <rect x="120" y="30" width="60" height="30" rx="8" opacity="0.7"/>
+              <rect x="120" y="70" width="60" height="30" rx="8" opacity="0.7"/>
+            </svg>
+          </div>
+          <div class="process-body">
+            <span class="process-step">Step 02</span>
+            <h3>Scene &amp; Composition</h3>
+            <p>The Minecraft scene gets built and framed — angle, posing, and lighting worked out before any editing.</p>
+          </div>
         </div>
         <div class="process-card">
-          <span class="process-step">Step 03</span>
-          <h3>Final Polish</h3>
-          <p>A full edit pass for lighting, color, effects, and text — until it's ready to post.</p>
+          <div class="process-visual" aria-hidden="true">
+            <svg viewBox="0 0 210 130" fill="none" stroke="var(--accent-bright)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="10" y="10" width="150" height="110" rx="12" opacity="0.85"/>
+              <rect x="24" y="24" width="122" height="70" rx="6" opacity="0.6"/>
+              <circle cx="102" cy="42" r="7" opacity="0.75"/>
+              <path d="M30 90 L62 58 L88 82 L112 54 L142 90 Z" opacity="0.85"/>
+              <line x1="24" y1="104" x2="146" y2="104" opacity="0.5"/>
+              <line x1="170" y1="24" x2="170" y2="94" opacity="0.4"/>
+              <circle cx="170" cy="34" r="5" opacity="0.7"/>
+              <circle cx="170" cy="52" r="5" opacity="0.7"/>
+              <circle cx="170" cy="70" r="5" opacity="0.7"/>
+              <circle cx="170" cy="88" r="5" opacity="0.7"/>
+            </svg>
+          </div>
+          <div class="process-body">
+            <span class="process-step">Step 03</span>
+            <h3>Final Polish</h3>
+            <p>A full edit pass for lighting, color, effects, and text — until it's ready to post.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -1226,14 +1296,25 @@
     staggerReveal(grid.querySelectorAll('.testimonial-card'));
   }
 
+  function renderStatusPill(settings){
+    var pill = document.getElementById('statusPill');
+    var text = document.getElementById('statusPillText');
+    if (!pill || !text) return;
+    var open = !settings || settings.commissionsOpen !== false;
+    pill.classList.toggle('closed', !open);
+    text.textContent = open ? 'Commissions Open' : 'Commissions Closed';
+  }
+
   Promise.all([
     fetch('data/trusted.json').then(function(r){ return r.json(); }),
     fetch('data/work.json').then(function(r){ return r.json(); }),
-    fetch('data/quotes.json').then(function(r){ return r.json(); })
+    fetch('data/quotes.json').then(function(r){ return r.json(); }),
+    fetch('data/settings.json').then(function(r){ return r.json(); }).catch(function(){ return { commissionsOpen: true }; })
   ]).then(function(results){
     renderTrusted(results[0].items || []);
     renderWork(results[1].items || []);
     renderQuotes(results[2].items || []);
+    renderStatusPill(results[3] || {});
   }).catch(function(err){
     console.error('Failed to load site content:', err);
   });
