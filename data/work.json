@@ -1,31 +1,31 @@
 {
   "items": [
     {
-      "tag": "Scar",
+      "tag": "Scarvis",
       "image": "/Grxmrexper.art/images/uploads/Scar2.png",
       "alt": "Thumbnail commissioned for Scar",
       "video": "https://www.youtube.com/watch?v=EEKLdn0iaDM&t=1339s"
     },
     {
-      "tag": "KavernMC",
+      "tag": "Kavern",
       "image": "/Grxmrexper.art/images/uploads/Kav3.png",
       "alt": "Unused thumbnail for KavernMC",
       "video": "https://www.youtube.com/watch?v=VtX2Do4zMDE&t=19s"
     },
     {
       "image": "/Grxmrexper.art/images/uploads/Kav2.png",
-      "tag": "KavernMC",
+      "tag": "Kavern",
       "alt": "Thumbnail commissioned for KavernMC",
       "video": "https://www.youtube.com/watch?v=dhg5pUHWeBI&t=29s"
     },
     {
-      "tag": "KavernMC",
+      "tag": "Kavern",
       "image": "/Grxmrexper.art/images/uploads/kav3v2.png",
       "alt": "Thumbnail commissioned for KavernMC",
       "video": "https://www.youtube.com/watch?v=VtX2Do4zMDE&t=19s"
     },
     {
-      "tag": "KavernMC",
+      "tag": "Kavern",
       "image": "/Grxmrexper.art/images/uploads/kav4.png",
       "video": "https://www.youtube.com/watch?v=oDiHSR4F5ac&t=4s",
       "alt": "Thumbnail commissioned for KavernMC"
@@ -35,6 +35,11 @@
       "alt": "Thumbnail commissioned for Scar",
       "image": "/Grxmrexper.art/images/uploads/scarprac.png",
       "video": "https://www.youtube.com/watch?v=Tl9Zzq-KeAs&t=15s"
+    },
+    {
+      "tag": "Kavern",
+      "alt": "Thumbnail commissioned for KavernMC",
+      "image": "/Grxmrexper.art/images/uploads/kavrrupeted1.png"
     }
   ]
 }
