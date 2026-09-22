@@ -20,6 +20,37 @@ collections:
         file: "data/settings.json"
         fields:
           - { label: "Commissions Open", name: "commissionsOpen", widget: "boolean", default: true, hint: "Toggle off when you're not taking new commissions — the status pill on the site updates automatically." }
+          - label: "Pricing"
+            name: "pricing"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Section subtitle", name: "sectionSubtitle", widget: "string", required: false }
+              - label: "Tiers"
+                name: "tiers"
+                widget: "list"
+                summary: "{{fields.name}} — ${{fields.priceValue}}{{fields.priceSuffix}}"
+                fields:
+                  - { label: "Name", name: "name", widget: "string" }
+                  - { label: "Short label (shown on the price calculator button)", name: "shortLabel", widget: "string", required: false, hint: "Leave blank to use the full name." }
+                  - { label: "Base price ($)", name: "priceValue", widget: "number", value_type: "int" }
+                  - { label: "Price suffix", name: "priceSuffix", widget: "string", required: false, hint: "e.g. \"–$10\" to show a range like $6–$10. Leave blank for a flat price." }
+                  - { label: "Description", name: "description", widget: "text" }
+                  - { label: "Mark as \"Most Popular\"", name: "popular", widget: "boolean", default: false }
+              - { label: "Bulk discount kicks in at (thumbnails)", name: "bulkDiscountThreshold", widget: "number", value_type: "int", default: 5 }
+              - { label: "Bulk discount (%)", name: "bulkDiscountPercent", widget: "number", value_type: "int", default: 10 }
+          - label: "Social & Contact"
+            name: "social"
+            widget: "object"
+            collapsed: true
+            hint: "Updates the Discord/YouTube/TikTok/Ko-fi links in both the Contact section and the footer."
+            fields:
+              - { label: "Discord user ID", name: "discordId", widget: "string" }
+              - { label: "YouTube handle (display text)", name: "youtubeHandle", widget: "string" }
+              - { label: "YouTube URL", name: "youtubeUrl", widget: "string" }
+              - { label: "TikTok handle (display text)", name: "tiktokHandle", widget: "string" }
+              - { label: "TikTok URL", name: "tiktokUrl", widget: "string" }
+              - { label: "Ko-fi username", name: "kofiUsername", widget: "string", hint: "Just the username, e.g. \"grxmrexper\" for ko-fi.com/grxmrexper" }
 
   - name: "trusted"
     label: "Trusted By (YouTube channels)"
