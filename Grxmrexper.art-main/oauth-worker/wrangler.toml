@@ -1,0 +1,8 @@
+# oauth-worker/wrangler.toml
+name = 'grxmrexper-art'
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+# Secrets are set separately, never written here:
+#   wrangler secret put GITHUB_CLIENT_ID
+#   wrangler secret put GITHUB_CLIENT_SECRET
