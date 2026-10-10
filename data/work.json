@@ -49,7 +49,8 @@
     {
       "tag": "Kavern",
       "alt": "Commissioned for Kavern",
-      "image": "/Grxmrexper.art/images/uploads/kav5real.png"
+      "image": "/Grxmrexper.art/images/uploads/kav5real.png",
+      "video": "https://youtu.be/Hdtf6kJMJTs"
     },
     {
       "image": "/Grxmrexper.art/images/uploads/scripted.png",
@@ -66,7 +67,8 @@
     {
       "image": "/Grxmrexper.art/images/uploads/mangp.png",
       "tag": "MangoChan",
-      "alt": "Commission for MangoChan"
+      "alt": "Commission for MangoChan",
+      "video": "https://www.youtube.com/watch?v=YJOGRjQCEbs"
     }
   ]
 }
