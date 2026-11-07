@@ -77,6 +77,9 @@ nav a.l{color:var(--mute);font-size:15px}nav a.l:hover{color:#fff}
 .card img{width:100%;height:100%;object-fit:cover}
 .card span{position:absolute;left:10px;top:10px;background:rgba(31,32,35,.75);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:700;color:#fff}
 .card em{position:absolute;right:10px;bottom:10px;background:var(--btn);border-radius:999px;padding:3px 12px;font-size:12px;font-weight:700;font-style:normal;color:#fff}
+.card[hidden]{display:none}
+.more{display:flex;justify-content:center;margin-top:28px}
+.more[hidden]{display:none}
 .empty{color:var(--mute)}
 /* quotes */
 .alt{background:var(--bg2)}
@@ -151,6 +154,7 @@ dialog img{width:100%;max-height:78vh;object-fit:contain;border-radius:var(--r)}
   <p class="lead">Thumbnails made for SMP creators. Click any piece to view it full size. Some link straight to the finished video.</p>
   <div class="chips" id="chips" role="group" aria-label="Filter by client"></div>
   <div class="grid" id="grid"></div>
+  <div class="more" id="more" hidden><button class="btn ghost" id="moreBtn" aria-expanded="false" aria-controls="grid">Show more</button></div>
 </div></section>
 
 <section class="alt" id="reviews"><div class="wrap">
@@ -207,12 +211,28 @@ dialog img{width:100%;max-height:78vh;object-fit:contain;border-radius:var(--r)}
   function load(f,fb){return fetch('data/'+f+'.json').then(function(r){return r.json()}).catch(function(){return fb})}
 
   var work=[],view=[],cur=0,lb=$('#lb');
+  var ROWS=3,expanded=false;
+  // grid is auto-fill, so work out the real column count to know where row 3 ends
+  function cols(){var t=getComputedStyle($('#grid')).gridTemplateColumns;return t&&t!=='none'?t.split(' ').length:1}
+  function applyLimit(){
+    var cards=$('#grid').querySelectorAll('.card'),limit=cols()*ROWS;
+    cards.forEach(function(c,i){c.hidden=!expanded&&i>=limit});
+    $('#more').hidden=cards.length<=limit;
+    $('#moreBtn').textContent=expanded?'Show less':'Show more';
+    $('#moreBtn').setAttribute('aria-expanded',expanded);
+  }
+  $('#moreBtn').onclick=function(){
+    expanded=!expanded;applyLimit();
+    if(!expanded)$('#work').scrollIntoView({block:'start'});
+  };
+  var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(applyLimit,120)});
 
   function renderGrid(tag){
     view=work.filter(function(w){return tag==='All'||w.tag===tag});
     $('#grid').innerHTML=view.length?view.map(function(w,i){
       return '<button class="card" data-i="'+i+'" aria-label="'+esc(w.alt||w.tag)+'"><img src="'+esc(src(w.image))+'" alt="'+esc(w.alt||w.tag)+'" loading="lazy"><span>'+esc(w.tag)+'</span>'+(w.video?'<em>Video</em>':'')+'</button>';
     }).join(''):'<p class="empty">No thumbnails yet.</p>';
+    expanded=false;applyLimit();
   }
   function renderChips(){
     var tags=['All'].concat(work.map(function(w){return w.tag}).filter(function(t,i,a){return t&&a.indexOf(t)===i}));
