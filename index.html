@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#2a2b2f;--bg2:#35363b;--ink:#fff;--mute:#b4b7bf;--line:#4a4c53;--acc:#b79cff;--btn:#7c3aed;--btn-h:#6d28d9;--dark:#1f2023;--r:14px}
+:root{--nav:65px;--bg:#2a2b2f;--bg2:#35363b;--ink:#fff;--mute:#b4b7bf;--line:#4a4c53;--acc:#b79cff;--btn:#7c3aed;--btn-h:#6d28d9;--dark:#1f2023;--r:14px}
 *{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth;scroll-padding-top:76px}
 body{background:var(--bg);color:var(--ink);font:400 17px/1.6 "DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
@@ -48,6 +48,18 @@ nav .wrap{display:flex;align-items:center;gap:26px;height:64px}
 .logo img{width:32px;height:32px;border-radius:9px}
 nav a.l{color:var(--mute);font-size:15px}nav a.l:hover{color:#fff}
 @media(max-width:760px){nav a.l{display:none}}
+/* scroll-zoom showcase */
+.showcase{padding:0;position:relative;background:#000;height:calc(100vh - var(--nav) + 150vh);height:calc(100svh - var(--nav) + 150svh)}
+.showcase-stick{position:sticky;top:var(--nav);height:calc(100vh - var(--nav));height:calc(100svh - var(--nav));overflow:hidden;background:#000}
+.showcase video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform-origin:50% 50%;will-change:transform,opacity;pointer-events:none}
+@media(max-aspect-ratio:1/1){.showcase video{object-fit:contain}}
+.showcase-veil{position:absolute;inset:0;background:var(--bg);opacity:0;pointer-events:none}
+.showcase-cue{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:#fff;font:700 12px "DM Sans",sans-serif;letter-spacing:.18em;text-transform:uppercase;pointer-events:none;text-shadow:0 2px 12px rgba(0,0,0,.8)}
+.showcase-cue i{width:2px;height:30px;border-radius:2px;background:linear-gradient(#fff,rgba(255,255,255,0));animation:cue 1.6s ease-in-out infinite}
+@keyframes cue{0%{transform:scaleY(.2);transform-origin:top;opacity:0}40%{transform:scaleY(1);transform-origin:top;opacity:1}100%{transform:scaleY(1);transform-origin:bottom;opacity:0}}
+.showcase.static{height:auto}
+.showcase.static .showcase-stick{position:relative;top:0;height:min(56.25vw,70vh)}
+.showcase.static .showcase-cue{display:none}
 /* hero */
 .hero{padding:72px 0 40px}
 .hero .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:center}
@@ -133,7 +145,17 @@ dialog img{width:100%;max-height:78vh;object-fit:contain;border-radius:var(--r)}
   <a class="btn sm" href="#contact">Get a quote</a>
 </div></nav>
 
-<header class="hero" id="top"><div class="wrap">
+<section class="showcase" id="top" aria-label="Thumbnail showcase">
+  <div class="showcase-stick">
+    <video id="showcaseVideo" muted playsinline preload="auto" aria-hidden="true" tabindex="-1" poster="img/showcase-poster.jpg">
+      <source src="video/thumbnail-showcase.mp4" type="video/mp4">
+    </video>
+    <div class="showcase-veil"></div>
+    <div class="showcase-cue" aria-hidden="true"><span>Scroll</span><i></i></div>
+  </div>
+</section>
+
+<header class="hero" id="hero"><div class="wrap">
   <div>
     <div class="status" id="status">Commissions open</div>
     <h1>Thumbnails that make people click.</h1>
@@ -273,6 +295,44 @@ dialog img{width:100%;max-height:78vh;object-fit:contain;border-radius:var(--r)}
     var open=r[3].commissionsOpen!==false,s=$('#status');
     s.classList.toggle('closed',!open);s.textContent=open?'Commissions open':'Commissions closed';
   });
+})();
+</script>
+<script>
+// Scroll-zoom showcase: the video pins to the screen, zooms in as you scroll, then fades into the page.
+(function(){
+  var sec=document.querySelector('.showcase');if(!sec)return;
+  var stick=sec.querySelector('.showcase-stick'),vid=document.getElementById('showcaseVideo'),
+      veil=sec.querySelector('.showcase-veil'),cue=sec.querySelector('.showcase-cue');
+  var MAX_ZOOM=6;                 // final zoom factor (raise for a deeper zoom)
+  var FADE_START=.45,FADE_END=.85; // scroll progress where the video fades out
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function clamp(x,a,b){return Math.min(b,Math.max(a,x))}
+  function toLastFrame(){
+    var go=function(){try{vid.currentTime=Math.max(0,vid.duration-.05)}catch(e){}};
+    vid.readyState>=1?go():vid.addEventListener('loadedmetadata',go,{once:true});
+  }
+
+  // video plays once, then holds on the full thumbnail wall
+  if(reduce){sec.classList.add('static');toLastFrame();return}
+  var pl=vid.play();
+  if(pl&&pl.catch)pl.catch(toLastFrame); // autoplay blocked (e.g. low-power mode): show the full wall instead
+
+  var ticking=false;
+  function update(){
+    ticking=false;
+    var top=parseFloat(getComputedStyle(stick).top)||0;
+    var total=sec.offsetHeight-stick.offsetHeight;
+    var p=total>0?clamp((top-sec.getBoundingClientRect().top)/total,0,1):0;
+    vid.style.transform='scale('+Math.pow(MAX_ZOOM,p).toFixed(4)+')';           // steady, exponential zoom
+    vid.style.opacity=(1-clamp((p-FADE_START)/(FADE_END-FADE_START),0,1)).toFixed(3);
+    veil.style.opacity=clamp((p-.7)/.3,0,1).toFixed(3);                          // blends into the page colour
+    cue.style.opacity=(1-clamp(p/.12,0,1)).toFixed(3);
+  }
+  function req(){if(!ticking){ticking=true;requestAnimationFrame(update)}}
+  window.addEventListener('scroll',req,{passive:true});
+  window.addEventListener('resize',req);
+  update();
 })();
 </script>
 </body>
